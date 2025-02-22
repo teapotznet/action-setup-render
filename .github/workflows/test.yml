@@ -3,7 +3,7 @@ name: Action Tests
 on:
   push:
     branches:
-    - main
+      - main
   pull_request:
 
 defaults:
@@ -19,21 +19,22 @@ jobs:
         os: [macos-15, ubuntu-24.04, ubuntu-24.04-arm]
         render-version: [v0.3.0]
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Setup render
-      uses: ./
-      with:
-        render-version: ${{ matrix.render-version }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup render
+        uses: ./
+        with:
+          render-version: ${{ matrix.render-version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Verify render version installed
-      run: |
-        export RENDER_VERSION=$( render --version | awk '{print "v" $3}' )
-        if [ "$RENDER_VERSION" != "${{ matrix.render-version }}" ]; then
-          echo "error: render version ${{ matrix.render-version }} expected; got $RENDER_VERSION"
-          exit 1
-        fi
-        echo "render $RENDER_VERSION installed successfully."
+      - name: Verify render version installed
+        run: |
+          # Extract version ignoring any build metadata (e.g. -0d874e3)
+          RENDER_VERSION="$(render --version | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+')"
+          if [ "$RENDER_VERSION" != "${{ matrix.render-version }}" ]; then
+            echo "error: render version ${{ matrix.render-version }} expected; got $RENDER_VERSION"
+            exit 1
+          fi
+          echo "render $RENDER_VERSION installed successfully."
