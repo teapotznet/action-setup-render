@@ -1,0 +1,39 @@
+name: Action Tests
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test:
+    name: Test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-15, ubuntu-24.04, ubuntu-24.04-arm]
+        render-version: [v0.3.0]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup render
+      uses: ./
+      with:
+        render-version: ${{ matrix.render-version }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Verify render version installed
+      run: |
+        export RENDER_VERSION=$( render --version | awk '{print "v" $3}' )
+        if [ "$RENDER_VERSION" != "${{ matrix.render-version }}" ]; then
+          echo "error: render version ${{ matrix.render-version }} expected; got $RENDER_VERSION"
+          exit 1
+        fi
+        echo "render $RENDER_VERSION installed successfully."

@@ -1,0 +1,17 @@
+name: setup-render
+description: Setup render and add it to the PATH
+author: Teapotz Networks Inc. (https://github.com/teapotznet)
+branding:
+  icon: play
+  color: blue
+inputs:
+  render-version:
+    description: The render version to download (if necessary) and use.
+    required: false
+    default: latest
+outputs:
+  render-version:
+    description: The installed render version. Useful when given a version range as input.
+runs:
+  using: "node20"
+  main: "dist/index.js"

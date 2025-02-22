@@ -1,0 +1,37 @@
+{
+  "name": "setup-render",
+  "version": "1.0.0",
+  "description": "Install render for Github Actions",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "prepare": "ncc build index.js -o dist --source-map --license licenses.txt",
+    "all": "npm run lint && npm run prepare"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teapotznet/action-setup-render.git"
+  },
+  "author": "Teapotz Networks Inc. (https://github.com/teapotznet/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/teapotznet/action-setup-render/issues"
+  },
+  "homepage": "https://github.com/teapotznet/action-setup-render#readme",
+  "keywords": [
+    "github",
+    "actions",
+    "setup",
+    "render"
+  ],
+  "dependencies": {
+    "@actions/core": "^1.11.1",
+    "@actions/github": "^6.0.0",
+    "@actions/tool-cache": "^2.0.2"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.38.3",
+    "eslint": "^7.32.0",
+    "jest": "^29.7.0"
+  }
+}
